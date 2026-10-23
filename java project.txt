@@ -1,0 +1,135 @@
+
+import java.util.*;
+
+class Expense {
+    String category;
+    double amount;
+    String date;
+
+    Expense(String category, double amount, String date) {
+        this.category = category;
+        this.amount = amount;
+        this.date = date;
+    }
+
+    public String toString() {
+        return category + " | Rs." + amount + " | " + date;
+    }
+}
+
+public class Main {
+    static ArrayList<Expense> expenses = new ArrayList<>();
+    static double budget = 0;
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("\n--- Expense Manager ---");
+            System.out.println("1. Add Expense");
+            System.out.println("2. View Expenses");
+            System.out.println("3. Set Budget");
+            System.out.println("4. Check Budget");
+            System.out.println("5. Exit");
+            System.out.print("Enter choice: ");
+
+            while (!sc.hasNextInt()) {
+                System.out.println("Enter a valid number.");
+                sc.next();
+                System.out.print("Enter choice: ");
+            }
+
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    sc.nextLine();
+                    System.out.print("Enter category: ");
+                    String category = sc.nextLine();
+
+                    System.out.print("Enter amount: ");
+                    if (!sc.hasNextDouble()) {
+                        System.out.println("Invalid amount!");
+                        sc.nextLine();
+                        break;
+                    }
+                    double amount = sc.nextDouble();
+                    sc.nextLine();
+
+                    if (amount < 0) {
+                        System.out.println("Amount cannot be negative!");
+                        break;
+                    }
+
+                    System.out.print("Enter date: ");
+                    String date = sc.nextLine();
+
+                    expenses.add(new Expense(category, amount, date));
+                    System.out.println("Expense added successfully!");
+                    break;
+
+                case 2:
+                    if (expenses.isEmpty()) {
+                        System.out.println("No expenses recorded.");
+                    } else {
+                        for (Expense e : expenses) {
+                            System.out.println(e);
+                        }
+                    }
+                    break;
+
+                case 3:
+                    System.out.print("Enter monthly budget: ");
+                    if (!sc.hasNextDouble()) {
+                        System.out.println("Invalid budget!");
+                        sc.nextLine();
+                        break;
+                    }
+                    double newBudget = sc.nextDouble();
+
+                    if (newBudget < 0) {
+                        System.out.println("Budget cannot be negative!");
+                    } else {
+                        budget = newBudget;
+                        System.out.println("Budget set to Rs." + budget);
+                    }
+                    break;
+
+                case 4:
+                    double total = 0;
+                    for (Expense e : expenses) {
+                        total += e.amount;
+                    }
+
+                    System.out.println("Total Expenses: Rs." + total);
+
+                    if (budget == 0) {
+                        System.out.println("Please set a budget first.");
+                    } else if (total > budget) {
+                        System.out.println("Budget exceeded by Rs."
+                                + (total - budget));
+                    } else {
+                        System.out.println("Remaining Budget: Rs."
+                                + (budget - total));
+                    }
+                    break;
+
+                case 5:
+                    System.out.println("Exiting...");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        } while (choice != 5);
+
+        sc.close();
+    }
+}
+
+
+
+
+
+
